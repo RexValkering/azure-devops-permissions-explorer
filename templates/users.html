@@ -1,0 +1,9 @@
+<!doctype html>
+<html>
+<title>Users</title>
+<ul>
+{% for user in users %}
+<li><a href="/user/{{ user.descriptor }}">{{ user.name }}</a></li>
+{% endfor %}
+</ul>
+</html>

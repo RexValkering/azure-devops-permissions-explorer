@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<title>Azure Devops Permissions Explorer</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script src="https://kit.fontawesome.com/4128ffc868.js"></script>
+<script src="/static/scripts.js"></script>
+
+<style>
+.detail-icon {
+    color: black;
+    margin-left: 10px;
+    float: right;
+}
+
+h2 a {
+    color: black;
+    text-decoration: underline
+}
+
+.fixedwidth {
+    max-width: 40px;
+}
+</style>
+
+</head>
+<body style="background-color: rgb(244, 246, 249);">
+<div id="content" style="padding: 10px">
+    <h2><a href="/">Azure Devops Permissions Explorer</a></h2>
+    <div class="row">
+    {% for entity_type, entities in [('Users', users), ('Groups', groups)] %}
+    <!-- {{ entities }} -->
+    <div id="{{ entity_type|lower }}" class="col col-xs-3">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">{{ entity_type }}</h3>
+        </div>
+        <div class="card-body">
+        {% for entity, relation, direct in entities %}
+        <!-- {{ entity }} -->
+        <div class="btn-group btn-block" role="group" aria-label="Basic example">
+            <button type="button"
+                    class="btn {{'btn-secondary' if entity == subject else 'btn-outline-secondary' }} fixedwidth">{{'1' if direct == 'direct' else ' ' if direct == 'subject' else '2'}}</button>
+            <button type="button"
+                    class="btn {{ 'btn-secondary' if entity == subject else 'btn-outline-secondary' }}"
+                    id="{{ entity.descriptor.split('.')[1] }}"
+                    descriptor="{{ entity.descriptor }}">
+                {{ entity.name }}
+            </button>
+            <button type="button" href="/entity/{{ entity.descriptor }}" class="btn {{ 'btn-secondary' if entity == subject else 'btn-outline-secondary' }} fixedwidth">
+                <i class="fas fa-external-link-square-alt"></i>
+            </button>
+        </div>
+        {% endfor %}
+        </div>
+    </div>
+    </div>
+    {% endfor %}
+    <div id="permissions" class="col col-xs-3">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Permissions</h3>
+        </div>
+        <div class="card-body">
+        {% for namespace in namespaces %}
+            <button type="button" class="btn btn-block btn-outline-secondary">{{ namespace.name }} <a href="/namespace/{{ namespace.descriptor }}" class="detail-icon"><i class="fas fa-external-link-square-alt"></i></a></button>
+        {% endfor %}
+        </div>
+    </div>
+    </div>
+    <div id="scope" class="col col-xs-3">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Scopes</h3>
+        </div>
+        <div class="card-body">
+        {% for scope in scopes %}
+            <button type="button" class="btn btn-block btn-outline-secondary">{{ scope.name }} <a href="/scope/{{ scope.descriptor }}" class="detail-icon"><i class="fas fa-external-link-square-alt"></i></a></button>
+        {% endfor %}
+        </div>
+    </div>
+    </div>
+    </div>
+</div>
+</body>
+</html>

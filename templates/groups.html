@@ -1,0 +1,9 @@
+<!doctype html>
+<html>
+<title>Groups</title>
+<ul>
+{% for group in groups %}
+<li><a href="/group/{{ group.descriptor }}">{{ group.name }}</a></li>
+{% endfor %}
+</ul>
+</html>
